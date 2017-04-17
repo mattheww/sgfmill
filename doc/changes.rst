@@ -2,8 +2,8 @@ Changes
 =======
 
 
-Sgfmill 1.0 (FIXME)
--------------------
+Sgfmill 1.0 (2017-04-17)
+------------------------
 
 * Python 3 port of the SGF code from Gomill__ 0.8.
 
