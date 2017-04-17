@@ -1,0 +1,4 @@
+# Sphinx inventory version 1
+# Project: Python
+# Version: 3
+datetime.date class library/datetime.html

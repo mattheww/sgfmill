@@ -1,0 +1,9 @@
+graft examples
+prune examples/__pycache__
+graft sgfmill_tests
+prune sgfmill_tests/__pycache__
+graft doc
+prune doc/_build
+include build_docs
+include run_sgfmill_testsuite
+include test_installed_sgfmill.py
