@@ -77,8 +77,8 @@ game, it doesn't broaden the set of characters you can use when you
 :meth:`~Tree_node.set` a property.
 
 If you plan to save a file as ``UTF-8`` and want to be able to set arbitrary
-strings, you can ensure the raw property is ``UTF-8`` by changing ``CA`` and
-reloading the game::
+strings, you can ensure the raw property encoding is ``UTF-8`` by changing
+``CA`` and reloading the game::
 
     game = sgf.Sgf_game.from_bytes(...)
     game.get_root().set("CA", "utf-8")
