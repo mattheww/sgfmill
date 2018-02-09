@@ -745,6 +745,10 @@ def test_node_set(tc):
     tc.assertRaisesRegex(TypeError, "^expected string, given bytes$",
                          root.set,'C', b"notastring")
 
+    tc.assertRaisesRegex(ValueError, "ill-formed property identifier",
+                         root.set, 'Black', (1, 2))
+
+
 def test_node_unset(tc):
     sgf_game = sgf.Sgf_game.from_bytes(b"(;FF[4]GM[1]SZ[9]HA[3])")
     root = sgf_game.get_root()
