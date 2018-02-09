@@ -453,6 +453,11 @@ def test_sgf_game_from_string(tc):
     tc.assertRaisesRegex(TypeError, "^expected string, given bytes$",
                          sgf.Sgf_game.from_string, b"(;CA[])")
 
+def test_lower_case_propidents(tc):
+    g1 = sgf.Sgf_game.from_string("(;FileFormat[4]SiZe[9]CoPyright[ccc])")
+    tc.assertEqual(g1.get_size(), 9)
+    tc.assertEqual(g1.get_root().get("CP"), "ccc")
+    tc.assertRaises(KeyError, g1.get_root().get, "CoPyright")
 
 def test_tree_mutation(tc):
     sgf_game = sgf.Sgf_game(9)

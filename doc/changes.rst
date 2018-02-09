@@ -4,6 +4,9 @@ Changes
 Sgfmill 1.1pre
 --------------
 
+* The parser now permits lower-case letters in *PropIdents*; see
+  :doc:`parsing` for details.
+
 * Bug fix: :meth:`.Tree_node.set` didn't check its ``identifier`` parameter
   was a well-formed *PropIdent*.
 

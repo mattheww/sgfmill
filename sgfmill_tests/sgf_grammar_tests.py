@@ -103,7 +103,6 @@ def test_tokeniser(tc):
 
     tc.assertEqual(check_incomplete(b"(;B[ag"), (3, 3))
     tc.assertEqual(check_incomplete(b"(;B[ag)"), (3, 3))
-    tc.assertEqual(check_incomplete(b"(;AddBlack[ag])"), (3, 3))
     tc.assertEqual(check_incomplete(b"(;+B[ag])"), (2, 2))
     tc.assertEqual(check_incomplete(b"(;B+[ag])"), (3, 3))
     tc.assertEqual(check_incomplete(b"(;B[ag]+)"), (4, 7))
@@ -114,6 +113,16 @@ def test_tokeniser(tc):
     tc.assertEqual(check_complete(br"(;[ab \] \\\] cd][ef]"), 4)
     tc.assertEqual(check_incomplete(br"(;B[ag\])"), (3, 3))
     tc.assertEqual(check_incomplete(br"(;B[ag\\\])"), (3, 3))
+
+def test_tokeniser_lower_case_propidents(tc):
+    tokenise = sgf_grammar.tokenise
+
+    tc.assertEqual(tokenise(b"(;AddBlack[ag])")[0],
+                   [('D', b'('),
+                    ('D', b';'),
+                    ('I', b'AB'),
+                    ('V', b'ag'),
+                    ('D', b')')])
 
 def test_parser_structure(tc):
     parse_sgf_game = sgf_grammar.parse_sgf_game
