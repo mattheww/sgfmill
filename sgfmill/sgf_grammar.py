@@ -74,8 +74,8 @@ def tokenise(bb, start_position=0):
 
     Skips leading junk.
 
-    Returns a list of pairs of strings (token type, contents), and also the
-    index in 'bb' of the start of the unprocessed 'tail'.
+    Returns a list of pairs (token type : str, contents : bytes),
+    and also the index in 'bb' of the start of the unprocessed 'tail'.
 
     token types and contents:
       I -- PropIdent: upper-case letters
