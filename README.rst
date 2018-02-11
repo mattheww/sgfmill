@@ -32,7 +32,7 @@ The documentation will be generated in ``doc/_build/html``.
 
 Requirements:
 
-- Sphinx__ version 1.0 or later (tested with 1.2)
+- Sphinx__ version 1.0 or later (tested with 1.4)
 
 .. __: http://sphinx.pocoo.org/
 
