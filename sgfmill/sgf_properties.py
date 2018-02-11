@@ -122,7 +122,7 @@ def serialise_number(i, context=None):
     i -- integer
 
     """
-    return str(i).encode("ascii")
+    return ("%d" % i).encode("ascii")
 
 
 def interpret_real(bb, context=None):

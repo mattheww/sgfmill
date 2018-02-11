@@ -10,6 +10,9 @@ Sgfmill 1.1pre
 * Bug fix: :meth:`.Tree_node.set` didn't check its ``identifier`` parameter
   was a well-formed *PropIdent*.
 
+* Bug fix: :meth:`.Tree_node.set` was willing to store invalid values for
+  properties of type Number, if fed invalid input.
+
 
 Sgfmill 1.0 (2017-04-17)
 ------------------------

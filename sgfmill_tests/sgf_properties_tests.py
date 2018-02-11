@@ -92,6 +92,9 @@ def test_serialise_number(tc):
     tc.assertEqual(serialise_number(0), b"0")
     tc.assertEqual(serialise_number(1), b"1")
     tc.assertEqual(serialise_number(2), b"2")
+    tc.assertEqual(serialise_number(2.0), b"2")
+    tc.assertEqual(serialise_number(2.5), b"2")
+    tc.assertRaises(TypeError, serialise_number, "1")
 
 def test_interpret_real(tc):
     interpret_real = sgf_properties.interpret_real
