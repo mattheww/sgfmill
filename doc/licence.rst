@@ -1,7 +1,7 @@
 Licence
 =======
 
-Sgfmill is copyright 2009-2017 Matthew Woodcraft
+Sgfmill is copyright 2009-2018 Matthew Woodcraft
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

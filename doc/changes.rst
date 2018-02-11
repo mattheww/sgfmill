@@ -1,8 +1,8 @@
 Changes
 =======
 
-Sgfmill 1.1pre
---------------
+Sgfmill 1.1 (2018-02-11)
+------------------------
 
 * The parser now permits lower-case letters in *PropIdents*; see
   :doc:`parsing` for details.
