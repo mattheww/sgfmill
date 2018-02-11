@@ -73,7 +73,7 @@ The documentation will be generated in doc/_build/html.
 
 Requirements:
 
-   Sphinx [1] version 1.0 or later (tested with 1.2)
+   Sphinx [1] version 1.0 or later (tested with 1.4)
 
 [1] http://sphinx.pocoo.org/
 
