@@ -107,8 +107,34 @@ class Board:
         region.neighbouring_colours = neighbouring_colours
         return region
 
-    def _find_surrounded_groups(self):
-        """Find solidly-connected groups with 0 liberties.
+    def _find_surrounded_groups(self, r, c):
+        """Find solidly-connected groups with 0 liberties adjacent to r,c.
+
+        Returns a list of _Groups.
+
+        """
+        surrounded = []
+        handled = set()
+        for (row, col) in [(r, c), (r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
+            if not ((0 <= row < self.side) and (0 <= col < self.side)):
+                continue
+
+            colour = self.board[row][col]
+            if colour is None:
+                continue
+
+            point = (row, col)
+            if point in handled:
+                continue
+
+            group = self._make_group(row, col, colour)
+            if group.is_surrounded:
+                surrounded.append(group)
+            handled.update(group.points)
+        return surrounded
+
+    def _find_all_surrounded_groups(self):
+        """Find all solidly-connected groups with 0 liberties.
 
         Returns a list of _Groups.
 
@@ -164,7 +190,7 @@ class Board:
             raise ValueError
         self.board[row][col] = colour
         self._is_empty = False
-        surrounded = self._find_surrounded_groups()
+        surrounded = self._find_surrounded_groups(row, col)
         simple_ko_point = None
         if surrounded:
             if len(surrounded) == 1:
@@ -211,7 +237,7 @@ class Board:
             self.board[row][col] = 'w'
         for (row, col) in empty_points:
             self.board[row][col] = None
-        captured = self._find_surrounded_groups()
+        captured = self._find_all_surrounded_groups()
         for group in captured:
             for row, col in group.points:
                 self.board[row][col] = None
