@@ -1,6 +1,9 @@
 Changes
 =======
 
+Sgfmill 1.1.1 (2018-05-20)
+--------------------------
+
 * Sped up the :class:`.Board` implementation (thanks to Seth Troisi).
 
 

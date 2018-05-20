@@ -122,4 +122,4 @@ Changelog
 
 See the 'Changes' page in the HTML documentation (doc/changes.rst).
 
-                                                                mjw 2018-02-11
+                                                                mjw 2018-05-20
