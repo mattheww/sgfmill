@@ -58,29 +58,30 @@ class Board:
         b._is_empty = self._is_empty
         return b
 
-    def _make_group(self, row, col, colour):
-        points = set()
-        is_surrounded = True
-        to_handle = set()
-        to_handle.add((row, col))
+    def _make_group(self, row, col, colour, short_circuit=False):
+        group = _Group()
+        group.colour = colour
+        group.points = {(row, col)}
+        # At least for now
+        group.is_surrounded = True
+
+        to_handle = {(row, col)}
         while to_handle:
-            point = to_handle.pop()
-            points.add(point)
-            r, c = point
-            for neighbour in [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
+            r, c = to_handle.pop()
+            for neighbour in ((r-1, c), (r+1, c), (r, c-1), (r, c+1)):
                 (r1, c1) = neighbour
                 if not ((0 <= r1 < self.side) and (0 <= c1 < self.side)):
                     continue
                 neigh_colour = self.board[r1][c1]
                 if neigh_colour is None:
-                    is_surrounded = False
+                    group.is_surrounded = False
+                    if short_circuit:
+                        return group
                 elif neigh_colour == colour:
-                    if neighbour not in points:
+                    if neighbour not in group.points:
                         to_handle.add(neighbour)
-        group = _Group()
-        group.colour = colour
-        group.points = points
-        group.is_surrounded = is_surrounded
+                        group.points.add(neighbour)
+
         return group
 
     def _make_empty_region(self, row, col):
@@ -92,7 +93,7 @@ class Board:
             point = to_handle.pop()
             points.add(point)
             r, c = point
-            for neighbour in [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
+            for neighbour in ((r-1, c), (r+1, c), (r, c-1), (r, c+1)):
                 (r1, c1) = neighbour
                 if not ((0 <= r1 < self.side) and (0 <= c1 < self.side)):
                     continue
@@ -114,8 +115,9 @@ class Board:
 
         """
         surrounded = []
-        handled = set()
-        for (row, col) in [(r, c), (r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
+        to_process = {(r, c), (r-1, c), (r+1, c), (r, c-1), (r, c+1)}
+        while to_process:
+            row, col = to_process.pop()
             if not ((0 <= row < self.side) and (0 <= col < self.side)):
                 continue
 
@@ -123,14 +125,10 @@ class Board:
             if colour is None:
                 continue
 
-            point = (row, col)
-            if point in handled:
-                continue
-
-            group = self._make_group(row, col, colour)
+            group = self._make_group(row, col, colour, short_circuit=True)
             if group.is_surrounded:
                 surrounded.append(group)
-            handled.update(group.points)
+            to_process.difference_update(group.points)
         return surrounded
 
     def _find_all_surrounded_groups(self):
