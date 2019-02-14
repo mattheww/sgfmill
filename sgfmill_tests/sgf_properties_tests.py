@@ -395,6 +395,8 @@ def test_presenter_interpret(tc):
     p19 = sgf_properties.Presenter(19, "UTF-8")
     tc.assertEqual(p9.interpret('KO', [b""]), True)
     tc.assertEqual(p9.interpret('SZ', [b"9"]), 9)
+    tc.assertEqual(p9.interpret('B', [b"ca"]), (8, 2))
+    tc.assertEqual(p19.interpret('B', [b"ca"]), (18, 2))
     tc.assertRaisesRegex(ValueError, "multiple values",
                           p9.interpret, 'SZ', [b"9", b"blah"])
     tc.assertEqual(p9.interpret('CR', [b"ab", b"cd"]), {(5, 2), (7, 0)})
@@ -412,7 +414,8 @@ def test_presenter_serialise(tc):
     tc.assertEqual(p9.serialise('SZ', 9), [b"9"])
     tc.assertEqual(p9.serialise('KM', 3.5), [b"3.5"])
     tc.assertEqual(p9.serialise('C', "foo\\:b]ar\n"), [b"foo\\\\:b\\]ar\n"])
-    tc.assertEqual(p19.serialise('B', (1, 2)), [b"cr"])
+    tc.assertEqual(p9.serialise('B', (8, 2)), [b"ca"])
+    tc.assertEqual(p19.serialise('B', (18, 2)), [b"ca"])
     tc.assertEqual(p9.serialise('B', None), [b"tt"])
     tc.assertEqual(p19.serialise('AW', {(17, 1), (18, 0)}), [b"aa", b"bb"])
     tc.assertEqual(p9.serialise('DD', [(1, 2), (3, 4)]), [b"ch", b"ef"])
