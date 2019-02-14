@@ -1,7 +1,5 @@
 """Tests for sgf_properties.py."""
 
-from textwrap import dedent
-
 from . import sgfmill_test_support
 
 from sgfmill import sgf_properties
