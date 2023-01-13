@@ -559,8 +559,8 @@ class Sgf_game:
         else:
             try:
                 size = int(size_bb)
-            except ValueError:
-                raise ValueError("bad SZ property: %s" % size_bb)
+            except ValueError as e:
+                raise ValueError("bad SZ property: %s" % size_bb) from e
         if override_encoding is None:
             try:
                 encoding = _get_raw('CA').decode("ascii", "replace")
@@ -645,9 +645,9 @@ class Sgf_game:
         """
         try:
             encoding = self.get_charset()
-        except ValueError:
+        except ValueError as e:
             raise ValueError("unsupported charset: %s" %
-                             self.root.get_raw("CA"))
+                             self.root.get_raw("CA")) from e
         coarse_tree = sgf_grammar.make_coarse_game_tree(
             self.root, lambda node:node, Node.get_raw_property_map)
         serialised = sgf_grammar.serialise_game_tree(coarse_tree, wrap)
@@ -771,8 +771,8 @@ class Sgf_game:
             return "ISO-8859-1"
         try:
             return sgf_properties.normalise_charset_name(s)
-        except LookupError:
-            raise ValueError("no codec available for CA %s" % s)
+        except LookupError as e:
+            raise ValueError("no codec available for CA %s" % s) from e
 
     def get_komi(self):
         """Return the komi as a float.
