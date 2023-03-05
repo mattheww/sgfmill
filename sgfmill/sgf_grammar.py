@@ -199,9 +199,9 @@ def _parse_sgf_game(bb, start_position):
                     else:
                         properties[prop_ident] = prop_values
                 except TypeError:
-                    raise ValueError("property value outside a node")
+                    raise ValueError("property value outside a node") from None
     except IndexError:
-        raise ValueError("unexpected end of SGF data")
+        raise ValueError("unexpected end of SGF data") from None
     assert index == len(tokens)
     return variation, end_position
 
@@ -254,7 +254,8 @@ def parse_sgf_collection(bb):
         try:
             game_tree, position = _parse_sgf_game(bb, position)
         except ValueError as e:
-            raise ValueError("error parsing game %d: %s" % (len(result), e))
+            raise ValueError("error parsing game %d: %s" % (len(result), e)) \
+                from None
         if game_tree is None:
             break
         result.append(game_tree)

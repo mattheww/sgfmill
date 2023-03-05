@@ -595,11 +595,11 @@ class Presenter(_Context):
         try:
             encoding.encode("ascii")
         except UnicodeEncodeError:
-            raise ValueError("encoding names must be ascii")
+            raise ValueError("encoding names must be ascii") from None
         try:
             encoding = normalise_charset_name(encoding)
         except LookupError:
-            raise ValueError("unknown encoding: %s" % encoding)
+            raise ValueError("unknown encoding: %s" % encoding) from None
         super().__init__(size, encoding)
         self.property_types_by_ident = _property_types_by_ident.copy()
         self.default_property_type = _text_property_type
@@ -634,7 +634,7 @@ class Presenter(_Context):
         except KeyError:
             result = self.default_property_type
             if result is None:
-                raise ValueError("unknown property")
+                raise ValueError("unknown property") from None
             return result
 
     def interpret_as_type(self, property_type, raw_values):

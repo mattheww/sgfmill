@@ -21,7 +21,7 @@ def opponent_of(colour):
     try:
         return _opponents[colour]
     except KeyError:
-        raise ValueError
+        raise ValueError from None
 
 def colour_name(colour):
     """Return the (lower-case) full name of a colour.
@@ -32,7 +32,7 @@ def colour_name(colour):
     try:
         return {'b': 'black', 'w': 'white'}[colour]
     except KeyError:
-        raise ValueError
+        raise ValueError from None
 
 
 column_letters = "ABCDEFGHJKLMNOPQRSTUVWXYZ"
@@ -70,7 +70,7 @@ def move_from_vertex(vertex, board_size):
     try:
         s = vertex.lower()
     except Exception:
-        raise ValueError("invalid vertex")
+        raise ValueError("invalid vertex") from None
     if s == "pass":
         return None
     try:
@@ -85,7 +85,7 @@ def move_from_vertex(vertex, board_size):
         if row < 0:
             raise ValueError
     except (IndexError, ValueError):
-        raise ValueError("invalid vertex: '%s'" % s)
+        raise ValueError("invalid vertex: '%s'" % s) from None
     if not (col < board_size and row < board_size):
         raise ValueError("vertex is off board: '%s'" % s)
     return row, col
