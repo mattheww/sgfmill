@@ -1,6 +1,7 @@
 """Go board representation."""
 
 from itertools import chain
+import functools
 
 from .common import opponent_of
 
@@ -30,6 +31,12 @@ class _Region:
         self.points = set()
         self.neighbouring_colours = set()
 
+@functools.lru_cache(maxsize=30)
+def get_all_board_points(side):
+    # use tuple avoid accidental modification
+    return tuple([(_row, _col) for _row in range(side)
+                for _col in range(side)])
+
 class Board:
     """A legal Go position.
 
@@ -44,8 +51,7 @@ class Board:
         self.side = side
         if side < 2:
             raise ValueError
-        self.board_points = [(_row, _col) for _row in range(side)
-                             for _col in range(side)]
+        self.board_points = get_all_board_points(side)
         self.board = []
         for row in range(side):
             self.board.append([None] * side)
