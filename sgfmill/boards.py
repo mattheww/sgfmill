@@ -1,6 +1,7 @@
 """Go board representation."""
 
 from itertools import chain
+import functools
 
 from .common import opponent_of
 
@@ -30,6 +31,22 @@ class _Region:
         self.points = set()
         self.neighbouring_colours = set()
 
+@functools.lru_cache(maxsize=30)
+def _get_all_board_points(side):
+    return [(_row, _col) for _row in range(side) for _col in range(side)]
+
+@functools.lru_cache(maxsize=30*30*4)
+def _get_neighbours(row, col, side):
+    neighbours = tuple()
+    for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
+        if (0 <= r < side) and (0 <= c < side):
+            neighbours += ((r, c),)
+    return neighbours
+
+@functools.lru_cache(maxsize=30*30*4)
+def _get_neighbours_and_self(row, col, side):
+    return _get_neighbours(row, col, side) + ((row, col),)
+
 class Board:
     """A legal Go position.
 
@@ -44,12 +61,16 @@ class Board:
         self.side = side
         if side < 2:
             raise ValueError
-        self.board_points = [(_row, _col) for _row in range(side)
-                             for _col in range(side)]
+        self._board_points = _get_all_board_points(side)
         self.board = []
         for row in range(side):
             self.board.append([None] * side)
         self._is_empty = True
+
+    @property
+    def board_points(self):
+        # Returns a copy so that modifying it is safe
+        return self._board_points[:]
 
     def copy(self):
         """Return an independent copy of this Board."""
@@ -67,10 +88,8 @@ class Board:
             point = to_handle.pop()
             points.add(point)
             r, c = point
-            for neighbour in [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
+            for neighbour in _get_neighbours(r, c, self.side):
                 (r1, c1) = neighbour
-                if not ((0 <= r1 < self.side) and (0 <= c1 < self.side)):
-                    continue
                 neigh_colour = self.board[r1][c1]
                 if neigh_colour is None:
                     is_surrounded = False
@@ -92,10 +111,8 @@ class Board:
             point = to_handle.pop()
             points.add(point)
             r, c = point
-            for neighbour in [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
+            for neighbour in _get_neighbours(r, c, self.side):
                 (r1, c1) = neighbour
-                if not ((0 <= r1 < self.side) and (0 <= c1 < self.side)):
-                    continue
                 neigh_colour = self.board[r1][c1]
                 if neigh_colour is None:
                     if neighbour not in points:
@@ -115,10 +132,7 @@ class Board:
         """
         surrounded = []
         handled = set()
-        for (row, col) in [(r, c), (r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
-            if not ((0 <= row < self.side) and (0 <= col < self.side)):
-                continue
-
+        for (row, col) in _get_neighbours_and_self(r, c, self.side):
             colour = self.board[row][col]
             if colour is None:
                 continue
@@ -141,7 +155,7 @@ class Board:
         """
         surrounded = []
         handled = set()
-        for (row, col) in self.board_points:
+        for (row, col) in self._board_points:
             colour = self.board[row][col]
             if colour is None:
                 continue
@@ -242,7 +256,7 @@ class Board:
             for row, col in group.points:
                 self.board[row][col] = None
         self._is_empty = True
-        for (row, col) in self.board_points:
+        for (row, col) in self._board_points:
             if self.board[row][col] is not None:
                 self._is_empty = False
                 break
@@ -255,7 +269,7 @@ class Board:
 
         """
         result = []
-        for (row, col) in self.board_points:
+        for (row, col) in self._board_points:
             colour = self.board[row][col]
             if colour is not None:
                 result.append((colour, (row, col)))
@@ -273,7 +287,7 @@ class Board:
         """
         scores = {'b' : 0, 'w' : 0}
         handled = set()
-        for (row, col) in self.board_points:
+        for (row, col) in self._board_points:
             colour = self.board[row][col]
             if colour is not None:
                 scores[colour] += 1

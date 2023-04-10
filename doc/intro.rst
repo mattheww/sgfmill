@@ -24,10 +24,12 @@ Point, Move and Stone values are interpreted as Go points.
 Python language support
 -----------------------
 
-Sgfmill supports Python 3 only.
+Sgfmill requires Python 3.5 or newer.
 
 It is a Python 3 version of the |sgf| code from the Python 2 Gomill__ project.
 If you need Python 2 support, please use Gomill instead.
+
+If you need support for older versions of Python 3, you can use sgfmill 1.1.1.
 
 .. __: https://mjw.woodcraft.me.uk/gomill/
 

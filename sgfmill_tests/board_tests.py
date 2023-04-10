@@ -136,6 +136,23 @@ def test_interpret_diagram(tc):
     padded = "\n\n" + _9x9_expected + "\n\n"
     tc.assertEqual(b1, ascii_boards.interpret_diagram(padded, 9))
 
+def test_get_neighbours(tc):
+    neighbours = boards._get_neighbours(0, 0, 5)
+    tc.assertEqual(2, len(neighbours))
+    tc.assertTrue((0, 1) in neighbours)
+    tc.assertTrue((1, 0) in neighbours)
+    tc.assertFalse((0, 0) in neighbours)
+    tc.assertFalse((-1, 0) in neighbours)
+    tc.assertFalse((0, -1) in neighbours)
+
+def test_get_neighbours_and_self(tc):
+    neighbours = boards._get_neighbours(0, 0, 5)
+    neighbour_and_self = boards._get_neighbours_and_self(0, 0, 5)
+    tc.assertEqual(len(neighbours) + 1, len(neighbour_and_self))
+    for n in neighbours:
+        tc.assertTrue(n in neighbour_and_self)
+    tc.assertTrue((0, 0) in neighbour_and_self)
+
 def test_copy(tc):
     b1 = boards.Board(9)
     b1.play(2, 3, 'b')
