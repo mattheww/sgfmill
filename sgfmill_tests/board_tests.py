@@ -137,7 +137,7 @@ def test_interpret_diagram(tc):
     tc.assertEqual(b1, ascii_boards.interpret_diagram(padded, 9))
 
 def test_get_neighbours(tc):
-    neighbours = boards.get_neighbours(0, 0, 5)
+    neighbours = boards._get_neighbours(0, 0, 5)
     tc.assertEqual(2, len(neighbours))
     tc.assertTrue((0, 1) in neighbours)
     tc.assertTrue((1, 0) in neighbours)
@@ -146,8 +146,8 @@ def test_get_neighbours(tc):
     tc.assertFalse((0, -1) in neighbours)
 
 def test_get_neighbours_and_self(tc):
-    neighbours = boards.get_neighbours(0, 0, 5)
-    neighbour_and_self = boards.get_neighbours_and_self(0, 0, 5)
+    neighbours = boards._get_neighbours(0, 0, 5)
+    neighbour_and_self = boards._get_neighbours_and_self(0, 0, 5)
     tc.assertEqual(len(neighbours) + 1, len(neighbour_and_self))
     for n in neighbours:
         tc.assertTrue(n in neighbour_and_self)

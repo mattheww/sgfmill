@@ -32,11 +32,11 @@ class _Region:
         self.neighbouring_colours = set()
 
 @functools.lru_cache(maxsize=30)
-def get_all_board_points(side):
+def _get_all_board_points(side):
     return [(_row, _col) for _row in range(side) for _col in range(side)]
 
 @functools.lru_cache(maxsize=30*30*4)
-def get_neighbours(row, col, side):
+def _get_neighbours(row, col, side):
     neighbours = tuple()
     for r, c in [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]:
         if (0 <= r < side) and (0 <= c < side):
@@ -44,10 +44,10 @@ def get_neighbours(row, col, side):
     return neighbours
 
 @functools.lru_cache(maxsize=30*30*4)
-def get_neighbours_and_self(row, col, side):
+def _get_neighbours_and_self(row, col, side):
     if (0 <= row < side) and (0 <= col < side):
-        return get_neighbours(row, col, side) + ((row, col),)
-    return get_neighbours(row, col, side)
+        return _get_neighbours(row, col, side) + ((row, col),)
+    return _get_neighbours(row, col, side)
 
 class Board:
     """A legal Go position.
@@ -63,7 +63,7 @@ class Board:
         self.side = side
         if side < 2:
             raise ValueError
-        self._board_points = get_all_board_points(side)
+        self._board_points = _get_all_board_points(side)
         self.board = []
         for row in range(side):
             self.board.append([None] * side)
@@ -90,7 +90,7 @@ class Board:
             point = to_handle.pop()
             points.add(point)
             r, c = point
-            for neighbour in get_neighbours(r, c, self.side):
+            for neighbour in _get_neighbours(r, c, self.side):
                 (r1, c1) = neighbour
                 neigh_colour = self.board[r1][c1]
                 if neigh_colour is None:
@@ -113,7 +113,7 @@ class Board:
             point = to_handle.pop()
             points.add(point)
             r, c = point
-            for neighbour in get_neighbours(r, c, self.side):
+            for neighbour in _get_neighbours(r, c, self.side):
                 (r1, c1) = neighbour
                 neigh_colour = self.board[r1][c1]
                 if neigh_colour is None:
@@ -134,7 +134,7 @@ class Board:
         """
         surrounded = []
         handled = set()
-        for (row, col) in get_neighbours_and_self(r, c, self.side):
+        for (row, col) in _get_neighbours_and_self(r, c, self.side):
             colour = self.board[row][col]
             if colour is None:
                 continue
