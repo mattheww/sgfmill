@@ -1,6 +1,11 @@
 Changes
 =======
 
+* Sped up the :class:`.Board` implementation (thanks to Lin, Yong Xiang).
+
+* The minimum Python version is now 3.5.
+
+
 Sgfmill 1.1.1 (2018-05-20)
 --------------------------
 
