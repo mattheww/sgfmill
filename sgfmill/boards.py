@@ -45,9 +45,7 @@ def _get_neighbours(row, col, side):
 
 @functools.lru_cache(maxsize=30*30*4)
 def _get_neighbours_and_self(row, col, side):
-    if (0 <= row < side) and (0 <= col < side):
-        return _get_neighbours(row, col, side) + ((row, col),)
-    return _get_neighbours(row, col, side)
+    return _get_neighbours(row, col, side) + ((row, col),)
 
 class Board:
     """A legal Go position.
